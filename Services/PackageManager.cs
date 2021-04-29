@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,6 +38,8 @@ namespace Pkgscan.Services
 
         public async Task<PackageInfo> GetPackageInfoAsync(string packageName, string version)
         {
+            var versions = await this.GetPackageVersionsAsync(packageName);
+
             var registrationResource = await _repository.GetResourceAsync<RegistrationResourceV3>();
             var packageIdentity = new PackageIdentity(packageName, NuGetVersion.Parse(version));
 
@@ -55,6 +58,7 @@ namespace Pkgscan.Services
             var lastUpdate = catalogItem.Value<DateTime>("lastEdited");
             var size = catalogItem.Value<long>("packageSize");
             var description = catalogItem.Value<string>("description");
+            var lastVersion = versions.Last();
 
             return new PackageInfo
             {
@@ -64,7 +68,8 @@ namespace Pkgscan.Services
                 PublishDate = publishDate.ToString("MM/dd/yyyy"),
                 Size = size.ToReadableSize(),
                 Description = description,
-                Version = version
+                Version = version,
+                LatestVersion = lastVersion.ToString()
             };
         }
     }

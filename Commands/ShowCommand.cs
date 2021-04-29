@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,12 +57,13 @@ namespace Pkgscan.Commands
                 table.AddRow(packageInfo.Name,
                     packageInfo.Author,
                     packageInfo.Version,
-                    packageInfo.Version,
+                    packageInfo.LatestVersion,
                     packageInfo.Size,
                     packageInfo.PublishDate,
                     packageInfo.LastUpdate);
             }
 
+            Console.WriteLine();
             table.Write(Format.Minimal);
         }
     }
