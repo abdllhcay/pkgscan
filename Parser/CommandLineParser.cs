@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 using CommandLine;
 
 using Pkgscan.Commands;
-using Pkgscan.Helpers;
+using Pkgscan.Common;
 using Pkgscan.Options;
 
 namespace Pkgscan.Parser
@@ -13,7 +13,7 @@ namespace Pkgscan.Parser
     {
         private string ProjectPath { get; set; }
 
-        public void Initialize(string[] args)
+        public async Task Initialize(string[] args)
         {
             ProjectPath = args[0].Trim();
 
@@ -22,10 +22,11 @@ namespace Pkgscan.Parser
                 Process.Terminate("The specified directory is not found.");
             }
 
-            CommandLine.Parser.Default.ParseArguments<ShowOptions>(args)
-            //  .WithParsed<MainOptions>(RunMainOptions)
-             .WithParsed<ShowOptions>(RunShowOptions)
-             .WithNotParsed(HandleParseError);
+            await CommandLine.Parser.Default.ParseArguments<ShowOptions>(args)
+                .MapResult(
+                    (ShowOptions opts) => RunShowOptions(opts),
+                    errs => Task.FromResult(0)
+                );
         }
 
         // private void RunMainOptions(MainOptions opts)
@@ -33,14 +34,9 @@ namespace Pkgscan.Parser
         //     var a = 10;
         // }
 
-        private void RunShowOptions(ShowOptions options)
+        private async Task RunShowOptions(ShowOptions options)
         {
-            ShowCommand.Run(options, this.ProjectPath);
-        }
-
-        private void HandleParseError(IEnumerable<Error> errs)
-        {
-            //handle errors
+            await ShowCommand.RunAsync(options, this.ProjectPath);
         }
     }
 }

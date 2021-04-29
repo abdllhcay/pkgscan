@@ -1,6 +1,6 @@
 using System;
 
-namespace Pkgscan.Helpers
+namespace Pkgscan.Common
 {
     public static class Process
     {
