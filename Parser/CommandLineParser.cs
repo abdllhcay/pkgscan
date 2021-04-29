@@ -15,16 +15,9 @@ namespace Pkgscan.Parser
 
         public async Task Initialize(string[] args)
         {
-            ProjectPath = args[0].Trim();
-
-            if (!Directory.Exists(this.ProjectPath))
-            {
-                Process.Terminate("The specified directory is not found.");
-            }
-
             await CommandLine.Parser.Default.ParseArguments<ShowOptions>(args)
                 .MapResult(
-                    (ShowOptions opts) => RunShowOptions(opts),
+                    (ShowOptions opts) => RunShowOptions(opts, args[0].Trim()),
                     errs => Task.FromResult(0)
                 );
         }
@@ -34,9 +27,14 @@ namespace Pkgscan.Parser
         //     var a = 10;
         // }
 
-        private async Task RunShowOptions(ShowOptions options)
+        private async Task RunShowOptions(ShowOptions options, string projectPath)
         {
-            await ShowCommand.RunAsync(options, this.ProjectPath);
+            if (!Directory.Exists(projectPath))
+            {
+                Process.Terminate("The specified directory is not found.");
+            }
+
+            await ShowCommand.RunAsync(options, projectPath);
         }
     }
 }
