@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+
+using ConsoleTables;
 
 using Pkgscan.Common;
 using Pkgscan.Models;
@@ -44,32 +45,15 @@ namespace Pkgscan.Commands
                 }
             }
 
-            var padLength = packageList.Max(x => x.Name.Length) + 1;
-
-            // if (options.Verbose)
-            // {
-            //     Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", "#", "PACKAGE", "DESCRIPTION", "VERSION", "LATEST", "SIZE", "LAST UPDATE");
-            // }
-            // else
-            // {
-            //     Console.WriteLine("{0} {1} {2}", "#", "PACKAGE", "VERSION".PadLeft(padLength, ' '));
-
-            //     foreach (var package in packageList)
-            //     {
-            //         Console.WriteLine("{0} {1} {2}", packageList.IndexOf(package) + 1, package.Name, package.CurrentVersion.PadLeft(padLength - package.Name.Length + 5, ' '));
-            //     }
-            // }
-
             var packageManager = new PackageManager();
 
-            Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", "PACKAGE", "AUTHOR", "VERSION", "LATEST", "SIZE", "PUBLISHED", "LAST UPDATE");
+            var table = new ConsoleTable("PACKAGE", "AUTHOR", "VERSION", "LATEST", "SIZE", "PUBLISHED", "LAST UPDATE");
 
             foreach (var package in packageList)
             {
                 var packageInfo = await packageManager.GetPackageInfoAsync(package.Name, package.CurrentVersion);
 
-                Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
-                    packageInfo.Name,
+                table.AddRow(packageInfo.Name,
                     packageInfo.Author,
                     packageInfo.Version,
                     packageInfo.Version,
@@ -78,6 +62,7 @@ namespace Pkgscan.Commands
                     packageInfo.LastUpdate);
             }
 
+            table.Write(Format.Minimal);
         }
     }
 }

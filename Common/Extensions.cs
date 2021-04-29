@@ -11,6 +11,21 @@ namespace Pkgscan.Common
             return dictionary.Keys.Max(x => x.Length);
         }
 
+        public static string ToReadableSize(this long number)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+
+            int order = 0;
+
+            while (number >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                number = number / 1024;
+            }
+
+            return String.Format("{0:0.##} {1}", number, sizes[order]);
+        }
+
         public static string ToRelativeTime(this DateTime date)
         {
             const int SECOND = 1;

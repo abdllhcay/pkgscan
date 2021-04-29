@@ -10,6 +10,6 @@ namespace Pkgscan.Models
         public string Author { get; set; }
         public string PublishDate { get; set; }
         public string LastUpdate { get; set; }
-        public long Size { get; set; }
+        public string Size { get; set; }
     }
 }

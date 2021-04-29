@@ -62,7 +62,7 @@ namespace Pkgscan.Services
                 Name = name,
                 LastUpdate = lastUpdate.ToRelativeTime(),
                 PublishDate = publishDate.ToString("MM/dd/yyyy"),
-                Size = size,
+                Size = size.ToReadableSize(),
                 Description = description,
                 Version = version
             };
