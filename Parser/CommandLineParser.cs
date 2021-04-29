@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+
 using CommandLine;
 
+using Pkgscan.Commands;
+using Pkgscan.Helpers;
 using Pkgscan.Options;
 
 namespace Pkgscan.Parser
@@ -18,8 +19,7 @@ namespace Pkgscan.Parser
 
             if (!Directory.Exists(this.ProjectPath))
             {
-                Console.WriteLine("The specified directory is not found.");
-                Environment.Exit(0);
+                Process.Terminate("The specified directory is not found.");
             }
 
             CommandLine.Parser.Default.ParseArguments<ShowOptions>(args)
@@ -33,31 +33,9 @@ namespace Pkgscan.Parser
         //     var a = 10;
         // }
 
-        private void RunShowOptions(ShowOptions opts)
+        private void RunShowOptions(ShowOptions options)
         {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "dotnet",
-                    Arguments = $"list {ProjectPath} package",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-
-            process.Start();
-
-            // while (!proc.StandardOutput.EndOfStream)
-            // {
-            //     string line = proc.StandardOutput.ReadLine();
-            //     // do something with line
-            // }
-
-            // string output = process.StandardOutput.ReadToEnd();
-
-            process.WaitForExit();
+            ShowCommand.Run(options, this.ProjectPath);
         }
 
         private void HandleParseError(IEnumerable<Error> errs)
