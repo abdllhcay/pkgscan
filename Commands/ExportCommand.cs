@@ -1,9 +1,10 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using CsvHelper;
 using Pkgscan.Options;
 using Pkgscan.Services;
 
@@ -31,6 +32,14 @@ namespace Pkgscan.Commands
 
                 using FileStream createStream = File.Create($"{outputDir}/{fileName}.json");
                 await JsonSerializer.SerializeAsync(createStream, packageInfoList, jsonOptions);
+            }
+            else if (options.Csv)
+            {
+                using (var writer = new StreamWriter($"{outputDir}/{fileName}.csv"))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(packageInfoList);
+                }
             }
         }
     }
