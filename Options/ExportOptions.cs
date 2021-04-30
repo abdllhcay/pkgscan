@@ -13,5 +13,8 @@ namespace Pkgscan.Options
 
         [Option('j', "json", Default = false, HelpText = "Export package list in Json format.")]
         public bool Json { get; set; }
+
+        [Option('o', "output", HelpText = "Output file.")]
+        public string OutputPath { get; set; }
     }
 }
