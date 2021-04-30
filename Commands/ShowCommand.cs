@@ -10,11 +10,10 @@ namespace Pkgscan.Commands
 {
     public static class ShowCommand
     {
-        public static async Task RunAsync(ShowOptions options, string projectPath)
+        public static async Task RunAsync(ShowOptions options)
         {
             var packageService = new PackageService();
-
-            var packageInfoList = await packageService.GetPackageInfoList(projectPath);
+            var packageInfoList = await packageService.GetPackageInfoList(options.ProjectPath);
 
             var table = new ConsoleTable("PACKAGE", "AUTHOR", "VERSION", "LATEST", "SIZE", "PUBLISHED", "LAST UPDATE");
 

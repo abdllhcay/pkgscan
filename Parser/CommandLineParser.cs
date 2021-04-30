@@ -32,7 +32,7 @@ namespace Pkgscan.Parser
                 Process.Terminate("The specified directory is not found.");
             }
 
-            await ShowCommand.RunAsync(options, options.ProjectPath);
+            await ShowCommand.RunAsync(options);
         }
 
         private async Task RunExportOptions(ExportOptions options)
@@ -42,7 +42,7 @@ namespace Pkgscan.Parser
                 Process.Terminate("The specified directory is not found.");
             }
 
-            await ExportCommand.RunAsync(options, options.ProjectPath);
+            await ExportCommand.RunAsync(options);
         }
 
         private static Task<int> DisplayHelp<TOptions>(ParserResult<TOptions> parserResult)
