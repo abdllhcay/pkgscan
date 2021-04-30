@@ -18,7 +18,7 @@ namespace Pkgscan.Commands
             var packageInfoList = await packageService.GetPackageInfoList(projectPath);
 
             var outputDir = String.IsNullOrEmpty(options.OutputPath) ?
-                Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) :
+                Directory.GetCurrentDirectory() :
                 options.OutputPath;
 
             var fileName = Path.GetFileName(projectPath) + "_packages";
