@@ -34,6 +34,8 @@ namespace Pkgscan.Services
         {
             var resource = await _repository.GetResourceAsync<FindPackageByIdResource>();
             return await resource.GetAllVersionsAsync(packageName, _cache, _logger, _cancellationToken);
+
+
         }
 
         public async Task<PackageInfo> GetPackageInfoAsync(string packageName, string version)

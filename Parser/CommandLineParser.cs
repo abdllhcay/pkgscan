@@ -1,7 +1,9 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
 using CommandLine;
+using CommandLine.Text;
 
 using Pkgscan.Commands;
 using Pkgscan.Common;
@@ -11,30 +13,58 @@ namespace Pkgscan.Parser
 {
     public class CommandLineParser
     {
-        private string ProjectPath { get; set; }
-
         public async Task Initialize(string[] args)
         {
-            await CommandLine.Parser.Default.ParseArguments<ShowOptions>(args)
-                .MapResult(
-                    (ShowOptions opts) => RunShowOptions(opts, args[0].Trim()),
-                    errs => Task.FromResult(0)
+            var parser = new CommandLine.Parser(x => x.HelpWriter = null)
+                .ParseArguments<ShowOptions, ExportOptions>(args);
+
+            await parser.MapResult(
+                    (ShowOptions opts) => RunShowOptions(opts),
+                    (ExportOptions opts) => RunExportOptions(opts),
+                    errs => DisplayHelp(parser)
                 );
         }
 
-        // private void RunMainOptions(MainOptions opts)
-        // {
-        //     var a = 10;
-        // }
-
-        private async Task RunShowOptions(ShowOptions options, string projectPath)
+        private async Task RunShowOptions(ShowOptions options)
         {
-            if (!Directory.Exists(projectPath))
+            if (!Directory.Exists(options.ProjectPath))
             {
                 Process.Terminate("The specified directory is not found.");
             }
 
-            await ShowCommand.RunAsync(options, projectPath);
+            await ShowCommand.RunAsync(options, options.ProjectPath);
+        }
+
+        private async Task RunExportOptions(ExportOptions options)
+        {
+            if (!Directory.Exists(options.ProjectPath))
+            {
+                Process.Terminate("The specified directory is not found.");
+            }
+
+            await ExportCommand.RunAsync(options, options.ProjectPath);
+        }
+
+        private static Task<int> DisplayHelp<TOptions>(ParserResult<TOptions> parserResult)
+        {
+            var helpText = HelpText.AutoBuild(parserResult, h =>
+            {
+                h.AdditionalNewLineAfterOption = false;
+                h.Heading = "pkgscan 1.0.0";
+                h.Copyright = "";
+                h.AddPreOptionsLine("\nUsage: pkgscan PATH [COMMAND] [OPTION]");
+                h.AddPreOptionsLines(new string[]
+                {
+                    "\nPath:",
+                    "  Path to project file (directory contains .csproj file)",
+                });
+
+                return h;
+            }, e => e, verbsIndex: true);
+
+            Console.WriteLine(helpText);
+
+            return Task.FromResult(0);
         }
     }
 }
