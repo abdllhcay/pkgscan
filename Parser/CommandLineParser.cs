@@ -52,12 +52,7 @@ namespace Pkgscan.Parser
                 h.AdditionalNewLineAfterOption = false;
                 h.Heading = "pkgscan 1.0.0";
                 h.Copyright = "";
-                h.AddPreOptionsLine("\nUsage: pkgscan PATH [COMMAND] [OPTION]");
-                h.AddPreOptionsLines(new string[]
-                {
-                    "\nPath:",
-                    "  Path to project file (directory contains .csproj file)",
-                });
+                h.AddPreOptionsLine("\nUsage: pkgscan [COMMAND] [OPTION]");
 
                 return h;
             }, e => e, verbsIndex: true);
