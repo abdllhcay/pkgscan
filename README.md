@@ -10,7 +10,7 @@ pkgscan 1.0.2
 
 Usage: pkgscan [COMMAND] [OPTION]
 
-  show       Print packages to standard output. Type -h for more options.
+  list       Print packages to standard output. Type -h for more options.
   export     Export package list. Type -h for more options.
   help       Display more information on a specific command.
   version    Display version information.
