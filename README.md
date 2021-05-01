@@ -6,7 +6,7 @@ Dependency scanner and visualization tool for C# applications.
 
 ## Usage
 ```
-pkgscan 1.0.0
+pkgscan 1.0.2
 
 Usage: pkgscan [COMMAND] [OPTION]
 
