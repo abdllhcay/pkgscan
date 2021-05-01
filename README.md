@@ -1,4 +1,7 @@
 # pkgscan
+[![GitHub issues](https://img.shields.io/github/issues/abdllhcay/pkgscan)](https://github.com/abdllhcay/pkgscan/issues)
+![Version](https://img.shields.io/badge/version-1.0.1-blue)
+
 Dependency scanner and visualization tool for C# applications. 
 
 ## Usage
