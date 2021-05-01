@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using CsvHelper;
 
+using Pkgscan.Common;
 using Pkgscan.Options;
 using Pkgscan.Services;
 
@@ -15,6 +16,11 @@ namespace Pkgscan.Commands
     {
         public static async Task RunAsync(ExportOptions options)
         {
+            if (!Directory.Exists(options.ProjectPath))
+            {
+                Process.Terminate("The specified directory is not found.");
+            }
+
             var packageService = new PackageService();
             var packageInfoList = await packageService.GetPackageInfoList(options.ProjectPath);
 

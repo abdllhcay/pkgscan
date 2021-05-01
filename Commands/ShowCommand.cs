@@ -1,8 +1,10 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 using ConsoleTables;
 
+using Pkgscan.Common;
 using Pkgscan.Options;
 using Pkgscan.Services;
 
@@ -12,8 +14,15 @@ namespace Pkgscan.Commands
     {
         public static async Task RunAsync(ShowOptions options)
         {
+            var projectPath = options.ProjectPath;
+
+            if (!Directory.Exists(projectPath) && !File.Exists(projectPath))
+            {
+                Process.Terminate("The specified directory or file is not found.");
+            }
+
             var packageService = new PackageService();
-            var packageInfoList = await packageService.GetPackageInfoList(options.ProjectPath);
+            var packageInfoList = await packageService.GetPackageInfoList(projectPath);
 
             var table = new ConsoleTable("PACKAGE", "AUTHOR", "VERSION", "LATEST", "SIZE", "PUBLISHED", "LAST UPDATE");
 

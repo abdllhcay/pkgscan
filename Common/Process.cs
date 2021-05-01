@@ -12,6 +12,7 @@ namespace Pkgscan.Common
         public static void Terminate(string message)
         {
             Console.WriteLine(message);
+            Console.WriteLine();
             Environment.Exit(0);
         }
     }

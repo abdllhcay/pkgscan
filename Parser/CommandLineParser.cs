@@ -1,12 +1,10 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 using CommandLine;
 using CommandLine.Text;
 
 using Pkgscan.Commands;
-using Pkgscan.Common;
 using Pkgscan.Options;
 
 namespace Pkgscan.Parser
@@ -27,21 +25,11 @@ namespace Pkgscan.Parser
 
         private async Task RunShowOptions(ShowOptions options)
         {
-            if (!Directory.Exists(options.ProjectPath))
-            {
-                Process.Terminate("The specified directory is not found.");
-            }
-
             await ShowCommand.RunAsync(options);
         }
 
         private async Task RunExportOptions(ExportOptions options)
         {
-            if (!Directory.Exists(options.ProjectPath))
-            {
-                Process.Terminate("The specified directory is not found.");
-            }
-
             await ExportCommand.RunAsync(options);
         }
 
@@ -50,7 +38,7 @@ namespace Pkgscan.Parser
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "pkgscan 1.0.0";
+                h.Heading = "pkgscan 1.0.1";
                 h.Copyright = "";
                 h.AddPreOptionsLine("\nUsage: pkgscan [COMMAND] [OPTION]");
 
