@@ -14,18 +14,18 @@ namespace Pkgscan.Parser
         public async Task Initialize(string[] args)
         {
             var parser = new CommandLine.Parser(x => x.HelpWriter = null)
-                .ParseArguments<ShowOptions, ExportOptions>(args);
+                .ParseArguments<ListOptions, ExportOptions>(args);
 
             await parser.MapResult(
-                    (ShowOptions opts) => RunShowOptions(opts),
+                    (ListOptions opts) => RunListOptions(opts),
                     (ExportOptions opts) => RunExportOptions(opts),
                     errs => DisplayHelp(parser)
                 );
         }
 
-        private async Task RunShowOptions(ShowOptions options)
+        private async Task RunListOptions(ListOptions options)
         {
-            await ShowCommand.RunAsync(options);
+            await ListCommand.RunAsync(options);
         }
 
         private async Task RunExportOptions(ExportOptions options)
@@ -38,7 +38,7 @@ namespace Pkgscan.Parser
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "pkgscan 1.0.1";
+                h.Heading = "pkgscan 1.0.2";
                 h.Copyright = "";
                 h.AddPreOptionsLine("\nUsage: pkgscan [COMMAND] [OPTION]");
 

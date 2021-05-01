@@ -10,9 +10,9 @@ using Pkgscan.Services;
 
 namespace Pkgscan.Commands
 {
-    public static class ShowCommand
+    public static class ListCommand
     {
-        public static async Task RunAsync(ShowOptions options)
+        public static async Task RunAsync(ListOptions options)
         {
             var projectPath = options.ProjectPath;
 
